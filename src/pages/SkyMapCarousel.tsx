@@ -2,19 +2,36 @@ import { useState } from "react";
 import "./SkyMapCarousel.css";
 import data from "../data.json";
 
-const SkyMapCarousel = () => {
-  const maps = data;
+// Define TypeScript types for the data structure
+type Constellation = {
+  description: string;
+  x: number;
+  y: number;
+  image?: string; // Optional image property
+};
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [hoveredConstellation, setHoveredConstellation] = useState(null);
+type MapData = {
+  title: string;
+  description: string;
+  image: string;
+  constellations: Constellation[];
+};
+
+const SkyMapCarousel = () => {
+  // Type `maps` based on the JSON structure
+  const maps: MapData[] = data;
+
+  // State variables with correct types
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [hoveredConstellation, setHoveredConstellation] = useState<Constellation | null>(null);
 
   const handleNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % maps.length);
+    setActiveIndex((prevIndex: number) => (prevIndex + 1) % maps.length);
     setHoveredConstellation(null); // Reset hover state on slide change
   };
 
   const handlePrev = () => {
-    setActiveIndex((prevIndex) =>
+    setActiveIndex((prevIndex: number) =>
       prevIndex - 1 < 0 ? maps.length - 1 : prevIndex - 1
     );
     setHoveredConstellation(null); // Reset hover state on slide change
@@ -41,7 +58,6 @@ const SkyMapCarousel = () => {
           {/* Overlay interactive regions with star logo */}
           {currentMap.constellations.map((c) => (
             <div
-              key={c.name}
               className="constellation-star"
               style={{
                 left: `${c.x}px`,
@@ -61,12 +77,10 @@ const SkyMapCarousel = () => {
                 top: `${hoveredConstellation.y}px`,
               }}
             >
-              <h3>{hoveredConstellation.name}</h3>
               <p>{hoveredConstellation.description}</p>
               {hoveredConstellation.image && (
                 <img
                   src={hoveredConstellation.image}
-                  alt={hoveredConstellation.name}
                   className="tooltip-image"
                 />
               )}

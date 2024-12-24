@@ -21,7 +21,7 @@ const LandingPage = () => {
         star.style.top = `${Math.random() * 100}%`;
         star.style.left = `${Math.random() * 100}%`;
 
-        starContainer.appendChild(star);
+        starContainer?.appendChild(star);
       }
     };
 
